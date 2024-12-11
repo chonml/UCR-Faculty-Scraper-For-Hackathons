@@ -1,6 +1,17 @@
 from bs4 import BeautifulSoup
 import smtplib
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.image import MIMEImage
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+# Loading in credentials
+APP_CRED = os.getenv('APP_CRED')
+SENDER_ACC_NAME = os.getenv('SENDER_ACC_NAME')
+SIGNATURE_PATH = os.getenv('SIGNATURE_PATH')
 
 # Website to Scrape
 file_path = "UCR Profiles - Search & Browse.html"
@@ -24,10 +35,18 @@ def extract_emails_from_html(file_path):
 
 # Sends email
 def send_email(to_email, subject, body, sender_email, sender_password):
-    msg = MIMEText(body)
+    msg = MIMEMultipart()
     msg['Subject'] = subject
-    msg['From'] = 'Rose Hack <rosehackucr@gmail.com>'
+    msg['From'] = f'Go stupid go crazy ahhh <{SENDER_ACC_NAME}>'
     msg['To'] = to_email
+
+    msg.attach(MIMEText(body, 'html'))
+
+    with open(SIGNATURE_PATH, "rb") as img_file:  # Replace with your signature image path
+        img = MIMEImage(img_file.read())
+        img.add_header('Content-ID', SIGNATURE_PATH)
+        img.add_header('Content-Disposition', 'inline', filename=SIGNATURE_PATH)
+        msg.attach(img)
     
     try:
         # Connect to the SMTP server
@@ -44,29 +63,31 @@ def send_email(to_email, subject, body, sender_email, sender_password):
 #Insert other logic here to format emails to personalize emails
 def personalize_and_send_emails(emails, sender_email, sender_password):
     for email in emails:
-
-        # Create a personalized email body
-        body = f""
-        subject = f""
+        subject = "Larger Demo"
+        body = f"""
+        <html>
+        <body>
+            <p>Dear X,</p>
+            <br>
+            <p>Thank you for being a valued customer. We wanted to reach out to share some exciting updates!</p>
+            <br>
+            <p>Best regards,</p>
+            <p><b>Your Company</b></p>
+            <img src="cid:{SIGNATURE_PATH}" alt="Signature Image" style="width:200px;height:auto;">
+        </body>
+        </html>
+        """
 
         print(body, subject)
-        send_email(email, subject, body, sender_email, sender_password)
+        send_email(emails, subject, body, sender_email, sender_password)
 
 # Script Entry Point
 if __name__ == "__main__":
-    emails = [
-        "Insert Emails Here"
-    ]
-
-    valid_emails = []
-    
-    print("Extracted Emails:")
-
-    for email in emails: valid_emails.append(email)
+    emails = ["jdari003@ucr.edu", "jonathan.darius2015@gmail.com"]
     
     # Sender credentials
-    sender_email = "" 
-    sender_password = "" 
+    sender_email = SENDER_ACC_NAME
+    sender_password = APP_CRED
 
     # Automate sending emails
-    personalize_and_send_emails(valid_emails, sender_email, sender_password)
+    personalize_and_send_emails(emails, sender_email, sender_password)
