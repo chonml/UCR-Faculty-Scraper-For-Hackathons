@@ -37,7 +37,7 @@ def extract_emails_from_html(file_path):
 def send_email(to_email, subject, body, sender_email, sender_password):
     msg = MIMEMultipart()
     msg['Subject'] = subject
-    msg['From'] = f'Go stupid go crazy ahhh <{SENDER_ACC_NAME}>'
+    msg['From'] = f'Rose Hack <{SENDER_ACC_NAME}>'
     msg['To'] = to_email
 
     msg.attach(MIMEText(body, 'html'))
@@ -79,11 +79,11 @@ def personalize_and_send_emails(emails, sender_email, sender_password):
         """
 
         print(body, subject)
-        send_email(emails, subject, body, sender_email, sender_password)
+        send_email(email, subject, body, sender_email, sender_password)
 
 # Script Entry Point
 if __name__ == "__main__":
-    emails = ["jdari003@ucr.edu", "jonathan.darius2015@gmail.com"]
+    emails = [""]
     
     # Sender credentials
     sender_email = SENDER_ACC_NAME
