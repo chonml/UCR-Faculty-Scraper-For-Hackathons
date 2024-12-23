@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import smtplib
+from html.parser import HTMLParser
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
@@ -72,22 +73,131 @@ def personalize_and_send_emails(emails, sender_email, sender_password):
             <p>Thank you for being a valued customer. We wanted to reach out to share some exciting updates!</p>
             <br>
             <p>Best regards,</p>
-            <p><b>Your Company</b></p>
-            <img src="cid:{SIGNATURE_PATH}" alt="Signature Image" style="width:200px;height:auto;">
+            <br>
+            <p> Vishra @ Citrus Hack </p>
         </body>
         </html>
         """
-
-        print(body, subject)
         send_email(email, subject, body, sender_email, sender_password)
+
+    
+    print("All Emails Sent.....")
+
+
+def html_to_text(html_string):
+        class HTMLTextExtractor(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.result = []
+
+            def handle_data(self, data):
+                self.result.append(data)
+
+            def get_text(self):
+                return ''.join(self.result)
+
+        parser = HTMLTextExtractor()
+        parser.feed(html_string)
+        return parser.get_text()
+
+def preview_email(emails, sender_email):
+        subject = "Larger Demo"
+
+        print(f'Subject: {subject}')
+        body = f"""
+        <html>
+        <body>
+            <p>Dear X,</p>
+            <br>
+            <p>Thank you for being a valued customer. We wanted to reach out to share some exciting updates!</p>
+            <br>
+            <p>Best regards,</p>
+            <br>
+            <p>Vishra @ Citrus Hack </p> 
+        </body>
+        </html>
+        """
+        
+        print(html_to_text(body))
 
 # Script Entry Point
 if __name__ == "__main__":
-    emails = [""]
-    
-    # Sender credentials
+    # Include file paths once you are sure who you want to send emails to
+    emails = []
+
     sender_email = SENDER_ACC_NAME
     sender_password = APP_CRED
 
-    # Automate sending emails
-    personalize_and_send_emails(emails, sender_email, sender_password)
+    q = False
+
+    while (q != True):
+
+        print("\n----------------------------------------")
+        print("\nAutomated Email System for Hackthons")
+        print("\n----------------------------------------")
+        print("\n\n 1) Check Current List of Reciepients")
+        print("\n\n 2) Preview Email")
+        print("\n\n 3) Send Email")
+        print("\n\n 4) Quit")
+        print("\n----------------------------------------")
+
+        option = int(input("\n\nPlease Select on option (1, 2, 3, 4): "))
+
+        if option == 1:
+            print("\n\n----------------------------------------")
+            print("\nList of Recipients")
+            print("\n----------------------------------------\n\n")
+
+            for i in range(len(emails)):
+                print(f'{i+1}) {emails[i]}')
+
+            print("\n----------------------------------------")
+            print("\n\n0) Back")
+            print("\n----------------------------------------")
+            option_2 = int(input("\n\nPlease Selection an Option (0): "))
+
+            if (option_2 == 0):
+                pass
+            else:
+                raise ValueError("Incorrect Input")
+            
+        elif option == 2:
+            print("\n\n----------------------------------------")
+            print("\nEmail Preview")
+            print("\n----------------------------------------\n")
+            preview_email(emails[0], sender_email)
+            print("\n----------------------------------------")
+            print("\n\n0) Back")
+            print("\n----------------------------------------")
+            option_3 = int(input("\n\nPlease Selection an Option (0): "))
+
+            if (option_3 == 0):
+                pass
+            else:
+                raise ValueError("Incorrect Input")
+            
+        elif option == 3:
+            print("\n\n----------------------------------------")
+            print("\nSending Preview (ALL EMAILS)")
+            print("\n----------------------------------------\n")
+            for i in range(len(emails)):
+                print(f'{preview_email(emails[i], sender_email)}')
+            print("\n----------------------------------------")
+            print("\n\n1) Send Emails")
+            print("\n\n2) Back")
+            print("\n----------------------------------------")
+            option_4 = int(input("\n\nPlease Selection an Option (1, 2): "))
+
+            if (option_4 == 1):
+                personalize_and_send_emails(emails, sender_email, sender_password)
+            elif (option_4 == 2):
+                pass
+            else:
+                raise ValueError("Incorrect Input") 
+        elif option == 4:
+            exit(0)
+        else:
+            raise ValueError("Incorrect Input")
+
+    # # Automate sending emails
+    # personalize_and_send_emails(emails, sender_email, sender_password)
