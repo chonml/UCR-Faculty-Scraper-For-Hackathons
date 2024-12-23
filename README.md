@@ -11,7 +11,7 @@ I created this webscraper/email messenger to expedite the emailing process of re
 ## Installing Proper Python Version and Libraries
 1. Install Python (I'm using 3.9.12)
 2. Please run:
-`pip install bs4 smtplib html.parser email.mime.text email.mime.multipart email.mime.image python_dotenv os'
+`pip install bs4 smtplib html.parser email.mime.text email.mime.multipart email.mime.image python_dotenv os`
 
 ## Setting up app password for email automation
 
