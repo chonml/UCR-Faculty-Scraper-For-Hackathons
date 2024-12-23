@@ -15,3 +15,10 @@ I created this webscraper/email messenger to expedite the emailing process of re
 
 ## Setting up app password for email automation
 
+In order to use email automation with your email you will need to create a app password with google. Please go to https://myaccount.google.com/ and follow the navigation below:
+
+Security > App Passwords > Create New App Password for GMAIL
+
+Once you created your app passkey immediately create a .env in the home directory and fill in the following variables:
+
+![ENV_PICTURE][env_pic.png]
